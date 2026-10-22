@@ -1,0 +1,22 @@
+{
+  "validation_status": "PASS",
+  "date_range": "2026-06-23 \u2013 2026-10-20",
+  "source_rows": {
+    "clients": 12,
+    "teams": 12,
+    "workstreams": 24,
+    "operations": 2880,
+    "workforce": 1440,
+    "quality": 2880,
+    "finance": 2880,
+    "consolidated": 2880
+  },
+  "duplicate_business_keys": 0,
+  "broken_references": 0,
+  "broken_backlog_balance": 0,
+  "out_of_range_metrics": 0,
+  "finance_reconciliation_inr": 0,
+  "operations_reconciliation_cases": 0,
+  "quality_reconciliation_audits": 0,
+  "remarks": "Checks enforce source keys, merge reconciliation, inventory roll-forward and valid denominators; no real source systems were accessed."
+}

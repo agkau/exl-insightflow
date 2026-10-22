@@ -1,0 +1,11 @@
+assumption_id,category,assumption,evidence_status,production_validation
+A01,Organizational context,"Fictional B2B enterprise services operation, 4 regions, 12 teams, 12 clients, 24 workstreams",Unvalidated with EXL,"Company, role mapping and source catalog must be validated with EXL"
+A02,Time horizon,2026-06-23 through 2026-10-20; 120 calendar days,Synthetic fixed period,Replace with real rolling retention horizon
+A03,Data confidentiality,"All client, owner, personnel, and financial values are fabricated",Synthetic by design,"No actual EXL systems, employee or client data included"
+A04,Roles,"Executive, Operations Manager, Business Analyst",Demo role switch; not access control,Production would use SSO and row-level entitlements
+A05,WFM allocation,Team daily workforce distributed equally across 2 workstreams,Illustrative approximation,Use time logs or actual allocation for client profitability
+A06,Revenue / cost,"Fictional unit-price revenue, allocated labor and variable expense",Synthetic proxy,Do not present as actual business financials
+A07,Refresh cadence,"D+1 operations/QA/WFM, D+2 finance",Demonstration metadata,Implement real pipeline timestamps and monitoring
+A08,Root-cause insights,Deterministic variance comparison; association not causation,"Explanation, not prediction",Validate conclusions with source owners
+A09,Targets,"SLA 95%, QA 95%, operating margin 20%, absenteeism 9% max",Demonstration thresholds,Business owners must approve thresholds
+A10,Impact,Time saved / decision speed assessed through proposed before–after time study,Not measured,Do not assert verified productivity or financial lift

@@ -1,0 +1,5 @@
+source_id,fictional_export,file,source_grain,business_owner,mock_freshness,join_key,status
+SRC-OPS,Delivery management export,operations_daily.csv,Date × workstream,Operations Excellence,D+1,date + workstream_id,Synthetic / refreshed in batch
+SRC-WFM,Workforce planning export,workforce_daily.csv,Date × team,Workforce Management,D+1,date + team_id,Synthetic / allocated 50:50 to clients
+SRC-QA,Quality assurance export,quality_daily.csv,Date × workstream,Quality Lead,D+1,date + workstream_id,Synthetic / refreshed in batch
+SRC-FIN,Finance billing export,finance_daily.csv,Date × workstream,Finance Control,D+2,date + workstream_id,Synthetic / refreshed in batch

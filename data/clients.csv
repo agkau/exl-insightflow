@@ -1,0 +1,13 @@
+client_id,client_name,industry,client_tier,account_owner
+CL001,Aster Insurance,Insurance,Strategic,Account Lead 01
+CL002,BluePeak Retail,Retail,Core,Account Lead 02
+CL003,Cedar Mutual,Insurance,Core,Account Lead 03
+CL004,Delta Commerce,E-commerce,Strategic,Account Lead 04
+CL005,Evergreen Bank,Banking,Core,Account Lead 05
+CL006,Futura Mobility,Mobility,Core,Account Lead 06
+CL007,Grove Health,Healthcare,Strategic,Account Lead 07
+CL008,Horizon Utilities,Utilities,Core,Account Lead 08
+CL009,Indigo Telecom,Telecom,Core,Account Lead 09
+CL010,Juniper Finance,Financial services,Strategic,Account Lead 10
+CL011,Kestrel Logistics,Logistics,Core,Account Lead 11
+CL012,Lumen Services,Technology,Core,Account Lead 12

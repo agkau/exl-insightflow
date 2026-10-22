@@ -1,0 +1,72 @@
+{
+  "project": "InsightFlow | EXL Problem 17 demonstration",
+  "scenario": "ENTIRELY SYNTHETIC — no EXL operational data",
+  "data_start": "2026-06-23",
+  "data_end": "2026-10-20",
+  "n_days": 120,
+  "rows_by_table": {
+    "clients": 12,
+    "teams": 12,
+    "workstreams": 24,
+    "operations": 2880,
+    "workforce": 1440,
+    "quality": 2880,
+    "finance": 2880,
+    "consolidated": 2880
+  },
+  "assumptions": [
+    "Role switching is a demonstration, NOT a security control",
+    "All reporting is batch-generated and not live",
+    "Staffing allocation is an illustrative 50:50 split by workstream",
+    "Any root-cause text is explainable, heuristic association only"
+  ],
+  "targets": {
+    "sla": 0.95,
+    "qa": 0.95,
+    "margin": 0.2,
+    "absence": 0.09,
+    "csat": 0.88
+  },
+  "sources": [
+    {
+      "source_id": "SRC-OPS",
+      "fictional_export": "Delivery management export",
+      "file": "operations_daily.csv",
+      "source_grain": "Date × workstream",
+      "business_owner": "Operations Excellence",
+      "mock_freshness": "D+1",
+      "join_key": "date + workstream_id",
+      "status": "Synthetic / refreshed in batch"
+    },
+    {
+      "source_id": "SRC-WFM",
+      "fictional_export": "Workforce planning export",
+      "file": "workforce_daily.csv",
+      "source_grain": "Date × team",
+      "business_owner": "Workforce Management",
+      "mock_freshness": "D+1",
+      "join_key": "date + team_id",
+      "status": "Synthetic / allocated 50:50 to clients"
+    },
+    {
+      "source_id": "SRC-QA",
+      "fictional_export": "Quality assurance export",
+      "file": "quality_daily.csv",
+      "source_grain": "Date × workstream",
+      "business_owner": "Quality Lead",
+      "mock_freshness": "D+1",
+      "join_key": "date + workstream_id",
+      "status": "Synthetic / refreshed in batch"
+    },
+    {
+      "source_id": "SRC-FIN",
+      "fictional_export": "Finance billing export",
+      "file": "finance_daily.csv",
+      "source_grain": "Date × workstream",
+      "business_owner": "Finance Control",
+      "mock_freshness": "D+2",
+      "join_key": "date + workstream_id",
+      "status": "Synthetic / refreshed in batch"
+    }
+  ]
+}

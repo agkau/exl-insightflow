@@ -1,0 +1,11 @@
+metric,formula,source,interpretation,primary_roles
+SLA attainment,sum(cases_on_time) / sum(cases_closed),operations_daily,Closed cases delivered on time / total cases closed. Weighted ratio.,All roles
+Revenue,sum(revenue_inr),finance_daily,Billed-equivalent fictional INR revenue for selected period.,"Executive, Analyst"
+Operating margin,(sum(revenue_inr)-sum(cost_inr))/sum(revenue_inr),finance_daily,"Revenue less direct delivery and allocated labor costs; demo proxy, not audited EBIT.","Executive, Analyst"
+Backlog at period end,sum(backlog_close) for latest date across selected workstreams,operations_daily,Period ending stock; never sum backlog over days.,"Executive, Operations, Analyst"
+QA pass rate,sum(qa_passed)/sum(qa_audited),quality_daily,Audit-sample-weighted passing fraction.,"Operations, Analyst"
+Absenteeism,sum(absent_staff)/sum(planned_staff),workforce_daily,Share of roster absent; team grain; client-level view uses equal 50:50 allocation.,"Operations, Analyst"
+CSAT positivity,sum(csat_positive)/sum(csat_responses),quality_daily,"Synthetic survey positivity; response sample, not all delivered cases.","Operations, Analyst"
+Case throughput,sum(cases_closed),operations_daily,Count of cases closed in period.,"Operations, Analyst"
+Rework rate,sum(rework_cases)/sum(cases_closed),quality_daily + operations_daily,Rework share of closures; not a standalone clinical quality outcome.,"Operations, Analyst"
+Escalation rate,sum(escalations)/sum(cases_closed),operations_daily,Escalations share of closures.,"Operations, Analyst"

@@ -1,0 +1,13 @@
+{
+  "name": "insightflow",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Enterprise Insights & Role-Based Dashboards \u2014 synthetic-data application",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "npm test && python3 scripts/validate_data.py"
+  }
+}

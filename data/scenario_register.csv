@@ -1,0 +1,5 @@
+scenario_id,scenario,affected_team,day_index_inclusive,synthetic_mechanism,intended_visibility
+SC01,West Claims SLA & backlog deterioration,WE-CLM,99-119,"Increased incoming cases (+33% multiplier), increased absence (+20.5 pp), reduced on-time fraction (~14.5 pp)",Operations / Executive
+SC02,North Support QA deterioration,NO-CST,95-119,"Lower QA pass probability (~11.5 pp), additional rework (~9 pp)",Operations / Analyst
+SC03,South Data margin compression,SO-DAT,94-119,Incremental ₹385 variable cost per closed case while rate unchanged,Executive / Analyst
+SC04,East Data workforce shortfall,EA-DAT,103-119,"Additional absence (~17 pp), throughput and service capacity pressure",Operations / Analyst

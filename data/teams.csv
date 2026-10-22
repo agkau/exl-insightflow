@@ -1,0 +1,13 @@
+team_id,team_name,region,service_line,manager,baseline_staff
+NO-CLM,North · Claims Processing,North,Claims Processing,Delivery Manager 01,25
+NO-CST,North · Customer Support,North,Customer Support,Delivery Manager 02,24
+NO-DAT,North · Data Operations,North,Data Operations,Delivery Manager 03,20
+WE-CLM,West · Claims Processing,West,Claims Processing,Delivery Manager 04,26
+WE-CST,West · Customer Support,West,Customer Support,Delivery Manager 05,20
+WE-DAT,West · Data Operations,West,Data Operations,Delivery Manager 06,22
+SO-CLM,South · Claims Processing,South,Claims Processing,Delivery Manager 07,26
+SO-CST,South · Customer Support,South,Customer Support,Delivery Manager 08,21
+SO-DAT,South · Data Operations,South,Data Operations,Delivery Manager 09,22
+EA-CLM,East · Claims Processing,East,Claims Processing,Delivery Manager 10,24
+EA-CST,East · Customer Support,East,Customer Support,Delivery Manager 11,25
+EA-DAT,East · Data Operations,East,Data Operations,Delivery Manager 12,22
