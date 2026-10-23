@@ -11,6 +11,12 @@
     "finance": 2880,
     "consolidated": 2880
   },
+  "report_reconciliation": {
+    "report_count": 20,
+    "report_rows": 50400,
+    "reconstructed_feeds": 4,
+    "reconciliation_errors": 0
+  },
   "duplicate_business_keys": 0,
   "broken_references": 0,
   "broken_backlog_balance": 0,

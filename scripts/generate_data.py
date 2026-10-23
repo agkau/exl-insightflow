@@ -4,6 +4,7 @@ import csv, json, random, math
 from pathlib import Path
 from datetime import date, timedelta
 from collections import defaultdict
+from report_model import generate_report_exports,validate_report_exports
 R=random.Random(17092026)
 ROOT=Path(__file__).resolve().parents[1]
 D=ROOT/'data';D.mkdir(parents=True,exist_ok=True)
@@ -89,6 +90,11 @@ sources=[
  dict(source_id='SRC-FIN',fictional_export='Finance billing export',file='finance_daily.csv',source_grain='Date × workstream',business_owner='Finance Control',mock_freshness='D+2',join_key='date + workstream_id',status='Synthetic / refreshed in batch'),
 ]
 write('source_catalog.csv',sources)
+# Twenty distinct report exports simulate reporting fragmentation across four authoritative feeds.
+report_tables={'operations':ops,'workforce':workforce,'quality':quality,'finance':finance}
+report_catalog=generate_report_exports(D,report_tables)
+report_checks=validate_report_exports(D,report_tables)
+
 metrics=[
  ('SLA attainment','sum(cases_on_time) / sum(cases_closed)','operations_daily','Closed cases delivered on time / total cases closed. Weighted ratio.','All roles'),
  ('Revenue','sum(revenue_inr)','finance_daily','Billed-equivalent fictional INR revenue for selected period.','Executive, Analyst'),
@@ -130,7 +136,7 @@ manifest={
  'data_start':start.isoformat(),'data_end':end.isoformat(),'n_days':n_days,'rows_by_table':{'clients':len(clients),'teams':len(teams),'workstreams':len(streams),'operations':len(ops),'workforce':len(workforce),'quality':len(quality),'finance':len(finance),'consolidated':len(joined)},
  'assumptions':['Role switching is a demonstration, NOT a security control','All reporting is batch-generated and not live','Staffing allocation is an illustrative 50:50 split by workstream','Any root-cause text is explainable, heuristic association only'],
  'targets':{'sla':.95,'qa':.95,'margin':.20,'absence':.09,'csat':.88},
- 'sources':sources
+ 'sources':sources, 'reports':report_catalog, 'report_model':{'report_exports':20,'authoritative_feeds':4,'explanation':'20 separate synthetic operational report extracts, all grounded in 4 primary data feeds; not 20 independent enterprise source systems.'}
 }
 (D/'manifest.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False),encoding='utf-8')
 (D/'app_data.json').write_text(json.dumps({'manifest':manifest,'teams':teams,'clients':client_rows,'workstreams':streams,'facts':joined},ensure_ascii=False,separators=(',',':')),encoding='utf-8')
@@ -154,6 +160,6 @@ sumv=lambda rows,col:sum(x[col] for x in rows)
 assert sumv(joined,'revenue_inr')==sumv(finance,'revenue_inr')
 assert sumv(joined,'cases_closed')==sumv(ops,'cases_closed')
 assert sumv(joined,'qa_passed')==sumv(quality,'qa_passed')
-results={'validation_status':'PASS','date_range':f'{start} – {end}','source_rows':manifest['rows_by_table'],'duplicate_business_keys':0,'broken_references':0,'broken_backlog_balance':0,'out_of_range_metrics':0,'finance_reconciliation_inr':0,'operations_reconciliation_cases':0,'quality_reconciliation_audits':0,'remarks':'Checks enforce source keys, merge reconciliation, inventory roll-forward and valid denominators; no real source systems were accessed.'}
+results={'validation_status':'PASS','date_range':f'{start} – {end}','source_rows':manifest['rows_by_table'],'report_reconciliation':report_checks,'duplicate_business_keys':0,'broken_references':0,'broken_backlog_balance':0,'out_of_range_metrics':0,'finance_reconciliation_inr':0,'operations_reconciliation_cases':0,'quality_reconciliation_audits':0,'remarks':'Checks enforce source keys, merge reconciliation, inventory roll-forward and valid denominators; no real source systems were accessed.'}
 (D/'validation_results.json').write_text(json.dumps(results,indent=2),encoding='utf-8')
 print(json.dumps(results,indent=2))

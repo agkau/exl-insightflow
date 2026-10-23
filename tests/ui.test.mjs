@@ -94,3 +94,28 @@ test('client account manager benchmarks clients, not internal delivery teams',()
  assert.equal(fake('client').value,client[1]);
  assert.match(fake('contentRoot').innerHTML,/Operations and financial drivers/);
 });
+
+
+test('twenty actual report extracts are accessible through data lineage catalog',()=>{
+ assert.equal(data.manifest.reports.length,20);
+ assert.equal(new Set(data.manifest.reports.map(x=>x.file)).size,20);
+ fake('nav').listeners.click({target:{closest:()=>({dataset:{page:'sources'}})}});
+ const html=fake('contentRoot').innerHTML;
+ assert.match(html,/20 reports consolidated/);
+ assert.equal((html.match(/href="\.\/data\/reports\//g)||[]).length,20);
+ for(const domain of ['Operations','Workforce','Quality','Finance'])assert.ok(html.includes(domain));
+});
+test('source catalog can filter reports by domain and selected role',()=>{
+ fake('contentRoot').listeners.click({target:{closest:()=>({dataset:{reportDomain:'Finance'}})}});
+ let html=fake('contentRoot').innerHTML;
+ assert.match(html,/5 displayed \/ 20 total/);
+ assert.ok(html.includes('FIN01'));
+ assert.ok(!html.includes('OPS01'));
+ fake('role').value='Quality';fake('role').listeners.change({target:fake('role')});
+ fake('contentRoot').listeners.click({target:{closest:()=>({dataset:{reportDomain:'Quality'}})}});
+ fake('contentRoot').listeners.click({target:{closest:()=>({dataset:{reportToggle:'1'}})}});
+ html=fake('contentRoot').innerHTML;
+ assert.ok(html.includes('Only reports relevant to my role'));
+ assert.ok(html.includes('QA02'));
+ assert.ok(!html.includes('FIN01'));
+});
