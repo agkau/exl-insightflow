@@ -137,15 +137,15 @@ def create_app(db_url=None,seed=True):
 
     @app.post('/api/v1/ingest/preview')
     async def preview(files:list[UploadFile]=File(...),source_map:str=Form('{}'),mappings:str=Form('{}'),
-                      strict_finance:bool=Form(True),_=Depends(admin_guard)):
-        base,_,payload,check,_,_=await evaluate(files,source_map,mappings,strict_finance)
+                      strict_finance:str=Form('true'),_=Depends(admin_guard)):
+        base,_,payload,check,_,_=await evaluate(files,source_map,mappings,str(strict_finance).strip().lower() not in ('false','0','no'))
         return {'publishable':payload is not None and not check['unchanged'],'report':check,'active_version':base['id']}
 
     @app.post('/api/v1/ingest/publish')
     async def publish(files:list[UploadFile]=File(...),source_map:str=Form('{}'),mappings:str=Form('{}'),
-                      strict_finance:bool=Form(True),description:str=Form('Validated batch import'),
+                      strict_finance:str=Form('true'),description:str=Form('Validated batch import'),
                       expected_version:Optional[int]=Form(None),_=Depends(admin_guard)):
-        base,candidate,payload,check,batches,raw_uploads=await evaluate(files,source_map,mappings,strict_finance)
+        base,candidate,payload,check,batches,raw_uploads=await evaluate(files,source_map,mappings,str(strict_finance).strip().lower() not in ('false','0','no'))
         if expected_version is not None and expected_version!=base['id']:
             raise HTTPException(409,'Dataset changed since preview; preview again')
         if payload is not None and check['unchanged']:
