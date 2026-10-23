@@ -67,3 +67,10 @@ python -m pytest -q tests/backend
 **Synthetic demonstration only.** All client and employee names are fictitious. The GitHub Pages site is public and must not be used to publish real EXL/client reporting data. Three selectable personas simulate information relevance; they are not authenticated permissions. For actual enterprise access, enforce server-side identity/RBAC, protected source storage, credential rotation, retention policies and production observability. The backend's public read endpoint is intended only for fictional data.
 
 The finance verification `revenue = cases_closed × synthetic tariff` is a demo-specific check, *not* a real accounting policy; use approved contract/billing logic for actual accounts. Business semantics are never changed by speculative automatic mapping. Updates are not claimed to be real-time unless upstream automated feeds are configured.
+
+
+## v3: Decision-first eight-role experience
+
+Eight synthetic roles: Executive Leader, Operations Manager, Business Analyst, Finance Controller, Workforce Planner, Quality Lead, Client Account Manager, and Regional Manager. Role-specific KPIs, trend charts, priority issues, team ranking, decision briefs, and benchmarks are driven by the same governed source tables. See `src/lib/roles.js` and `docs/ROLE_BASED_DECISION_DESIGN.md`.
+
+New: Compare teams, one-click focus-to-performance drilldown, CSAT/rework exception signals, and local role+filter saved views. The static GitHub Pages deployment works without the optional backend, without authentication, and without outside AI services. These are UI personas, not permission boundaries.
