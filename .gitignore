@@ -6,3 +6,12 @@ __pycache__/
 .env.*
 !.env.example
 coverage/
+# Local persistent state and credentials
+*.db
+*.db-shm
+*.db-wal
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+inbox/

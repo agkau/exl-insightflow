@@ -1,78 +1,69 @@
-# InsightFlow — Enterprise Decision Intelligence
+# InsightFlow — Enterprise Insights & Role-Based Dashboards
 
-Functional, multi-file, zero-dependency web application demonstrating **enterprise reporting consolidation and role-relevant insights** for EXL Live Project, Problem 17.
+A maintainable, end-to-end **EXL Problem 17 proof of concept** demonstrating report consolidation, role-relevant decision views and governed source-data changes.
 
-**Live site:** https://agkau.github.io/exl-insightflow/  
-**Repository:** https://github.com/agkau/exl-insightflow
+**Frontend:** https://agkau.github.io/exl-insightflow/  
+**Source:** https://github.com/agkau/exl-insightflow
 
-> All organizations, clients, metrics, cases, and employee roles used in the demonstration are **synthetic**. The role selector is a persona simulation, not security enforcement or user authentication. This project is a public proof of concept, not a production enterprise system.
+The public static demo always works with its synthetic local JSON. The optional backend adds persistent data management without introducing any external model service.
 
-## Functionality
+## Features
 
-- Executive, Operations Manager, and Business Analyst perspectives, with relevant KPI cards and priority filters
-- Combined reporting from delivery operations, workforce planning, quality assurance, and finance source files
-- Six workspace modules: Overview, Performance, Exceptions, Data Lineage, Decision Log, Data Explorer
-- Time-series comparisons, weighted KPI calculations, reproducible threshold alerts, evidence details
-- Region, service line, team, client and period selection
-- Local decision log and CSV export (per-browser storage, not a shared enterprise workflow)
-- Auditable source exports, reconciliation metadata, synthetic scenarios and assumptions
+- Three persona dashboards: Executive, Operations, Analyst; seven workspaces including **Data management**.
+- Four simulated reporting streams across 12 teams, 12 clients and 24 workstreams over 120 days.
+- Explainable alerts, KPI drilldowns, evidence sources, filtering and CSV export.
+- CSV and Excel uploads with conservative schema drift mappings and typed parsing.
+- Data preview and validation, atomic version publication, immutability, rollback, SHA256 provenance of originals and refresh tracking.
+- Dependency-aware backlog rollforward and cross-report finance/quality checks (no silent financial source overwrites).
+- Local SQLite persistence; environment-selectable PostgreSQL for deployments.
+- Optional scheduled inbox batch import with quarantine and complete-batch atomicity.
+- Authenticated administrator operations; no external AI runtime dependency.
 
-## Run locally
+## Quick start (static frontend)
 
-Prerequisite: **Node.js 22+** (no npm package installation required).
+Requires Node.js 22+:
 
 ```bash
 npm run dev
+# http://localhost:4173/
 ```
 
-Open **http://localhost:4173/**. This app must be served by a local web server rather than opened using the `file://` protocol because its data is loaded from an external JSON file in the same repository.
+Static mode requires no Python, no hosted service and no credentials. Changes to source CSVs do **not** update this static snapshot until explicitly regenerated. For controlled updates use the backend.
 
-## Run automated checks
+## Quick start (frontend and backend together)
+
+Requires Python 3.12+:
 
 ```bash
-npm test
-python3 scripts/validate_data.py
-# or, with Python installed:
+python -m pip install -r requirements-backend.txt
+export INSIGHTFLOW_ADMIN_TOKEN="choose-a-long-secret"
+export DATABASE_URL="sqlite:///./insightflow.db"
+python -m uvicorn backend.service:app --host 127.0.0.1 --port 8000
+# http://localhost:8000/
+```
+
+On first start the backend seeds from the synthetic reports in `data/`; subsequent sessions persist changes. **Data management** handles uploads, preview/publish, version history and rollback. For full deployment details read [`docs/HOSTING_V2.md`](docs/HOSTING_V2.md).
+
+## Repository overview
+
+- `src/` and `styles/` — Dashboard interface, analytics, exception engine, data management UI.
+- `backend/` — API, source contracts, CSV/XLSX ingestion, dependencies, relational version store, scheduled batch scanner.
+- `data/` — Fictional source reports and the static demo payload.
+- `scripts/` — Synthetic data generator, source validation and local static server.
+- `tests/` — Frontend and backend integration tests.
+- `docs/DATA_GOVERNANCE.md` — Accepted/breaking changes, source dependencies, publication semantics and remaining limitations.
+- `docs/HOSTING_V2.md` — Local startup, PostgreSQL and optional cloud deployment.
+
+## Tests
+
+```bash
 npm run check
+python -m pip install -r requirements-test.txt
+python -m pytest -q tests/backend
 ```
 
-Regenerate the scenario data with `python3 scripts/generate_data.py`. The generator uses a fixed seed; maintain the original CSV fields, IDs, and date grain if extending the sample. All data transformations use client-side JavaScript for this synthetic demonstration.
+## Important boundaries
 
-## Architecture
+**Synthetic demonstration only.** All client and employee names are fictitious. The GitHub Pages site is public and must not be used to publish real EXL/client reporting data. Three selectable personas simulate information relevance; they are not authenticated permissions. For actual enterprise access, enforce server-side identity/RBAC, protected source storage, credential rotation, retention policies and production observability. The backend's public read endpoint is intended only for fictional data.
 
-```text
-index.html                      Semantic layout and application shell
-styles/main.css                 Visual system, layout and responsive CSS
-src/main.js                     Application entry point, state and page rendering
-src/lib/format.js               Formatting and basic arithmetic utilities
-src/lib/metrics.js              Weighted metric and time-series aggregations
-src/lib/alerts.js               Deterministic, explainable exception engine
-src/lib/csv.js                  Safe CSV serialization
-scripts/serve.mjs               Local development server, Node built-ins only
-scripts/generate_data.py        Deterministic four-source synthetic data generator
-scripts/validate_data.py        Referential integrity and reconciliation checks
-tests/metrics.test.mjs           Automated analytics and scenario tests
-.github/workflows/validate.yml  Run checks on every GitHub change
-data/app_data.json              Browser-ready fact and dimension data
- data/*.csv                     Four independent simulated exports, canonical fact and metadata
- data/manifest.json             KPI targets, data period and source lineage
- docs/                           Requirements, governance, evaluation and deployment notes
-```
-
-## GitHub Pages publishing
-
-The repository's existing **Settings → Pages → Deploy from a branch → main / (root)** configuration can remain unchanged. Publishing triggers when the root `index.html`, `src/`, `styles/`, and `data/` files are committed. No external build step is necessary. See [GitHub Pages instructions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
-
-**Important:** Upload the **contents** of this project ZIP, preserving directories. Do not upload the ZIP as a single file and do not put the project under another nested parent folder.
-
-## Data contracts and limitations
-
-- Fact grain: workstream × business day; workforce starts at team × day and is allocated equally across two workstreams as an **illustrative assumption**.
-- Correct ratios sum numerators and denominators before dividing. Backlog is a daily stock, not a sum over the entire analysis window.
-- Thresholds are illustrative, not EXL-approved. Root-cause recommendations are investigative hypotheses, not causal findings.
-- All metrics and alerts are computed locally in the browser from static, same-origin data. There is **no backend service, model API, analytics tracker, or external vendor dependency**.
-- Static hosting cannot enforce access control, share decision logs across users, or securely serve confidential datasets. For a production rollout, implement identity, a server-enforced permissions layer, and a protected operational datastore.
-
-## Submission
-
-See `docs/SOLUTION_ASSESSMENT.md`, `docs/PROJECT_PLAN.md`, `data/assumption_log.csv` and `data/validation_results.json`. Any potential productivity uplift must be validated through live user acceptance testing; none is claimed as measured here.
+The finance verification `revenue = cases_closed × synthetic tariff` is a demo-specific check, *not* a real accounting policy; use approved contract/billing logic for actual accounts. Business semantics are never changed by speculative automatic mapping. Updates are not claimed to be real-time unless upstream automated feeds are configured.

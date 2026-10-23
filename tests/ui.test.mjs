@@ -22,8 +22,8 @@ test('initial dashboard renders after loading external data',()=>{
   assert.match(fake('roleTitle').textContent,/Executive leadership/);
   assert.doesNotMatch(fake('contentRoot').innerHTML,/Unable to load/);
 });
-test('navigation contains six workspaces',()=>{
-  for(const name of ['Overview','Performance','Exceptions','Data lineage','Decision log','Data explorer'])
+test('navigation contains seven workspaces',()=>{
+  for(const name of ['Overview','Performance','Exceptions','Data lineage','Decision log','Data explorer','Data management'])
     assert.ok(fake('nav').innerHTML.includes(name),name);
 });
 test('changing role updates persona and KPI cards',()=>{
@@ -48,3 +48,9 @@ test('data lineage module renders original source names',()=>{
 });
 // No mocks are needed after the integration checks.
 after(()=>{globalThis.document=priorDocument;globalThis.fetch=priorFetch;globalThis.window=priorWindow;globalThis.localStorage=priorStorage;});
+
+test('data management workspace exposes database connection, staged validation and version controls',()=>{
+  fake('nav').listeners.click({target:{closest:()=>({dataset:{page:'manager'}})}});
+  for(const section of ['Data management','Secure report ingestion','Preview & validate','Version history & rollback'])
+    assert.ok(fake('contentRoot').innerHTML.includes(section),section);
+});
